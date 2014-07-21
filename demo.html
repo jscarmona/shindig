@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shindig Demo</title>
+</head>
+<body>
+    <script src="js/shindig.js"></script>
+    <script src="js/test.js"></script>
+    <script>
+        // Setup all the listeners
+
+        Shindig.listen('welcome', function (name) {
+            console.log('Welcome, ' + name.first + ' ' + name.last + '!');
+        });
+
+        Shindig.listen('welcome', function () {
+            console.log('more stuff will happen here');
+        });
+
+        Shindig.listen('welcome', function () {
+            // Simulating a longer process job
+
+            setTimeout(function () {
+                console.log('A bunch of stuff will happen here.');
+
+                Shindig.emit('goodbye', 'Ironman');
+
+                // Remove events
+
+                console.log('Pre', Shindig.listeners);
+
+                Shindig.remove('welcome');
+                Shindig.off('goodbye');
+
+                console.log('Post', Shindig.listeners);
+            }, 2000);
+        });
+
+        Shindig.on('goodbye', function (name) {
+            console.log('GoodBye, ' + name + '...');
+        });
+
+        // Fire events
+
+        Shindig.fire('welcome', {
+            first: 'Tony',
+            last: 'Starks'
+        });
+    </script>
+</body>
+</html>
