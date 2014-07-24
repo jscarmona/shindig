@@ -19,11 +19,11 @@
      * @param  {Object|String|Array} data
      * @param  {Object} context
      */
-    Shindig.prototype.fire = function(evt, data, context) {
+    Shindig.prototype.fire = function(evt, data) {
         if (this.listeners.hasOwnProperty(evt) && typeof this.listeners[evt] === 'object') {
             this.listeners[evt].forEach(function (callback) {
                 if (typeof callback === 'function') {
-                    callback.call(context | this, data);
+                    callback(data);
                 }
             });
         }
@@ -37,13 +37,15 @@
      * @param  {String}   evt
      * @param  {Function} callback
      */
-    Shindig.prototype.listen = function(evt, callback) {
+    Shindig.prototype.listen = function(evt, callback, context) {
         if (typeof callback === 'function') {
             if (! this.listeners[evt] || typeof this.listeners[evt] !== 'object') {
                 this.listeners[evt] = [];
             }
 
-            this.listeners[evt].push(callback);
+            this.listeners[evt].push(function() {
+                return callback.apply(context, arguments);
+            });
         }
     };
 
