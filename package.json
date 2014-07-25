@@ -1,0 +1,14 @@
+{
+  "name": "shindig.js",
+  "version": "0.0.1",
+  "description": "A simple eventing library.",
+  "author": "Javier Carmona <javierscarmona@gmail.com>",
+  "license": "MIT",
+  "repository": "https://github.com/jscarmona/shindig.git",
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.3.1"
+  },
+  "main": "./js/shindig.js"
+}
