@@ -27,7 +27,7 @@ Shindig.prototype.set = function(key, value, silent) {
             this.fire('create:' + key, value);
         }
         else {
-            this.fire('mutate:' + key, {
+            this.fire('change:' + key, {
                 'old' : this[key],
                 'new' : value
             });

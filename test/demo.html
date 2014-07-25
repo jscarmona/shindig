@@ -14,8 +14,8 @@
             console.log('created: ' + value);
         });
 
-        Shindig.on('mutate:derp', function (values) {
-            console.log('mutated: ' + values);
+        Shindig.on('change:derp', function (values) {
+            console.log('changed: ' + values.old);
         });
 
         Shindig.on('delete:derp', function (value) {
