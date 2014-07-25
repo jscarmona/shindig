@@ -6,7 +6,7 @@ gulp.task('scripts', function() {
     gulp.src('./src/js/shindig.js')
         .pipe(uglify())
         .pipe(rename('shindig.min.js'))
-        .pipe(gulp.dest('./build'));
+        .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('default', [ 'scripts' ]);
