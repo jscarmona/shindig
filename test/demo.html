@@ -10,27 +10,39 @@
     <script>
         // Setup all the listeners
 
-        Shindig.listen('welcome', function (name) {
+        Shindig.on('create:derp', function (value) {
+            console.log('created: ' + value);
+        });
+
+        Shindig.on('mutate:derp', function (values) {
+            console.log('mutated: ' + values);
+        });
+
+        Shindig.on('delete:derp', function (value) {
+            console.log('deleted: ' + value);
+        });
+
+        Shindig.on('welcome', function (name) {
             console.log('Welcome, ' + name.first + ' ' + name.last + '!');
         });
 
-        Shindig.listen('welcome', function () {
+        Shindig.on('welcome', function () {
             console.log('more stuff will happen here');
         });
 
-        Shindig.listen('welcome', function () {
+        Shindig.on('welcome', function () {
             // Simulating a longer process job
 
             setTimeout(function () {
                 console.log('A bunch of stuff will happen here.');
 
-                Shindig.emit('goodbye', 'Ironman');
+                Shindig.fire('goodbye', 'Ironman');
 
                 // Remove events
 
                 console.log('Pre', Shindig.listeners);
 
-                Shindig.remove('welcome');
+                Shindig.off('welcome');
                 Shindig.off('goodbye');
 
                 console.log('Post', Shindig.listeners);
@@ -47,6 +59,20 @@
             first: 'Tony',
             last: 'Starks'
         });
+
+
+        // Testing setters, getters and unsetters
+
+        console.log('first get: ' + Shindig.get('derp'));
+
+        Shindig.set('derp', 'Derp');
+        console.log('set to derp: ' + Shindig.get('derp'));
+
+        Shindig.set('derp', 'Herp');
+        console.log('set to herp: ' + Shindig.get('derp'));
+
+        Shindig.unset('derp');
+        console.log('deleted: ' + Shindig.get('derp'));
     </script>
 </body>
 </html>

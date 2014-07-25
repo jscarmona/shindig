@@ -5,6 +5,56 @@ var Shindig = function () {
 };
 
 /**
+ * Get property
+ *
+ * @param  {String} key
+ * @return {mixed}
+ */
+Shindig.prototype.get = function (key) {
+    return this[key];
+};
+
+/**
+ * Set property
+ *
+ * @param {String} key
+ * @param {mixed} value
+ * @param {Boolean} silent
+ */
+Shindig.prototype.set = function(key, value, silent) {
+    if (silent !== true) {
+        if (! this.hasOwnProperty(key)) {
+            this.fire('create:' + key, value);
+        }
+        else {
+            this.fire('mutate:' + key, {
+                'old' : this[key],
+                'new' : value
+            });
+        }
+    }
+
+    this[key] = value;
+};
+
+/**
+ * Unset property
+ *
+ * @param  {String} key
+ * @param  {Boolean} silent
+ * @return {void}
+ */
+Shindig.prototype.unset = function(key, silent) {
+    if (this.hasOwnProperty(key)) {
+        if (silent !== true) {
+            this.fire('delete:' + key, this[key]);
+        }
+
+        delete this[key];
+    }
+};
+
+/**
  * Fire event
  *
  * @param  {String} evt
@@ -21,15 +71,13 @@ Shindig.prototype.fire = function(evt, data) {
     }
 };
 
-Shindig.prototype.emit = Shindig.prototype.fire;
-
 /**
  * Listen for an event
  *
  * @param  {String}   evt
  * @param  {Function} callback
  */
-Shindig.prototype.listen = function(evt, callback, context) {
+Shindig.prototype.on = function(evt, callback, context) {
     if (typeof callback === 'function') {
         if (! this.listeners[evt] || typeof this.listeners[evt] !== 'object') {
             this.listeners[evt] = [];
@@ -41,20 +89,16 @@ Shindig.prototype.listen = function(evt, callback, context) {
     }
 };
 
-Shindig.prototype.on = Shindig.prototype.listen;
-
 /**
  * Remove listeners
  *
  * @param  {String} evt
  */
-Shindig.prototype.remove = function(evt) {
+Shindig.prototype.off = function(evt) {
     if (this.listeners.hasOwnProperty(evt)) {
         delete this.listeners[evt];
     }
 };
-
-Shindig.prototype.off = Shindig.prototype.remove;
 
 /**
  * Expose the class either via AMD, CommonJS or the global object
