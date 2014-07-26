@@ -2,6 +2,7 @@
 
 var Shindig = function () {
     this.listeners = {};
+    this.properties = {};
 };
 
 /**
@@ -11,7 +12,7 @@ var Shindig = function () {
  * @return {mixed}
  */
 Shindig.prototype.get = function (key) {
-    return this[key];
+    return this.properties[key];
 };
 
 /**
@@ -23,18 +24,19 @@ Shindig.prototype.get = function (key) {
  */
 Shindig.prototype.set = function(key, value, silent) {
     if (silent !== true) {
-        if (! this.hasOwnProperty(key)) {
+        console.log(key);
+        if (! this.properties.hasOwnProperty(key)) {
             this.fire('create:' + key, value);
         }
         else {
             this.fire('change:' + key, {
-                'old' : this[key],
+                'old' : this.properties[key],
                 'new' : value
             });
         }
     }
 
-    this[key] = value;
+    this.properties[key] = value;
 };
 
 /**
@@ -45,12 +47,12 @@ Shindig.prototype.set = function(key, value, silent) {
  * @return {void}
  */
 Shindig.prototype.unset = function(key, silent) {
-    if (this.hasOwnProperty(key)) {
+    if (this.properties.hasOwnProperty(key)) {
         if (silent !== true) {
-            this.fire('delete:' + key, this[key]);
+            this.fire('delete:' + key, this.properties[key]);
         }
 
-        delete this[key];
+        delete this.properties[key];
     }
 };
 
